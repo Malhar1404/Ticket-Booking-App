@@ -1,6 +1,20 @@
-import React from 'react';
+import React from 'react'
+import { useState , useEffect} from 'react';
+import Loginform from '../components/Loginform'
+import Signupform from '../components/Signupform'
+import { useNavigate } from 'react-router-dom';
+
 
 function SignupPage() {
+  const [toggleForm, setToggleForm] = useState(false);  
+  const navigate = useNavigate();
+  
+  const toggleFormHandler = () => {
+    setToggleForm(!toggleForm);
+    // const newPathname = toggleForm ? '/login' : '/signup';
+    // navigate(newPathname, { replace: true });
+  };
+
   return (
     <div className="container-fluid">
       <div className="row" style={{ height: '100vh' }}>
@@ -16,8 +30,10 @@ function SignupPage() {
             </div>
           </div>
         </div>
-        <div className="col d-flex justify-content-center align-items-center">
-          {/* Add your content here */}
+        <div className="col m-auto">
+          <div className="d-flex justify-content-center m-auto w-100">
+            {toggleForm ? <Signupform onClick={toggleFormHandler} /> : <Loginform onClick={toggleFormHandler} />}
+          </div>
         </div>
       </div>
     </div>
