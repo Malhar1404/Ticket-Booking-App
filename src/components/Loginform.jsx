@@ -17,7 +17,7 @@ const LoginForm = ({onClick}) => {
       fetch('http://ec2-13-201-98-117.ap-south-1.compute.amazonaws.com:3000/auth/login',{
         method : 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body : JSON.stringify(logFormData)
       }).then((response)=>{
@@ -25,7 +25,7 @@ const LoginForm = ({onClick}) => {
         return response.json();
       }).then(data => {
         localStorage.setItem('token','Bearer ' + data.data.accessToken);
-        navigate('/homepage')
+        navigate('/main')
       }).catch(error => {
         console.log(error); 
       }) 

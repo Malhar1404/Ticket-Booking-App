@@ -1,0 +1,197 @@
+body{
+    height: 100%;
+    background: linear-gradient(45deg, lightblue, white, lightblue);
+    background-repeat: no-repeat;
+}
+
+.nav{
+    background: transparent;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.under-header-text{
+    margin: 80px;
+    font-size: 50px;
+    font-style: 'Barlow Condensed';
+    color: rgb(42, 126, 204);
+    font-weight: 700;
+}
+
+.navigation-button{
+    margin: 0px 30px 0px 0px;
+}
+
+.navigation-button button{
+    font-size: 20px;
+    font-weight: 600;
+    width: 100px;
+}
+
+.movie-img, .mv-img{
+    margin-top: 10px;
+    border-radius: 5%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    height: 200px;
+    width: 150px;
+}
+
+.card{
+    border: none;
+    background: transparent;
+}
+
+.left-section{
+    width: 60%;
+}
+
+.right-section{
+    width: 40%;
+}
+
+.theatre-btn{
+    color: rgb(84, 84, 84);
+    background-color: transparent;
+    border: 2px solid rgb(192, 192, 192);
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.theatre-btn:hover{
+    background-color: rgb(149, 218, 255);
+}
+
+.date-btn{
+    font-weight: 500;
+    color: rgb(84, 84, 84);
+    background-color: transparent;
+    border: 2px solid rgb(192, 192, 192);
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.date-btn:hover{
+    background-color: rgb(149, 218, 255);
+}
+
+.movie-holder {
+    height: 40%;
+    position: relative; /* To make it easier to contain the child image */
+}
+
+.mv-img{
+    height: 220px;
+}
+
+.ticket-card{
+    border: 2px solid rgb(55, 165, 225);
+    border-radius: 10px;
+}
+
+.header{
+    padding-top: 30px;
+    padding-left: 200px;
+    font-size: 40px;
+    font-weight: 700;
+    color: rgb(55, 165, 225);
+}
+
+.screen{
+    margin: 0 auto;
+    width: 50%;
+    border: 8px solid rgb(175, 175, 175);
+    border-radius: 3px;
+}
+
+.horizontal-line{
+    border: 1px solid rgb(203, 203, 203);
+    background-color: rgb(157, 157, 157);
+    border-radius: 10px;
+}
+
+.overflow-scroll {
+    max-height: 50vh; /* Adjust the height as needed */
+    overflow-y: auto;
+    padding-right: 10px; /* Prevent scrollbar from overlapping content */
+}
+
+/* Hide the scrollbar */
+.overflow-scroll::-webkit-scrollbar {
+    display: none; /* Hides scrollbar for Webkit browsers */
+}
+
+.theatre-page-btn{
+    border-radius: 10px;
+    border: 2px solid rgb(204, 204, 204);
+    background: transparent;
+}
+
+.theatre-page-btn:hover{
+    border-color: rgb(184, 226, 250);
+    background: linear-gradient(90deg, lightblue, rgb(190, 227, 251), rgb(184, 226, 250));
+}
+
+a{
+    text-decoration: none;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    /* height: 100%; */
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+.row {
+    height: 100%;
+}
+
+.background{
+    background: linear-gradient(90deg, lightblue, white, lightblue);
+}
+
+.header_font{
+    font-style: 'Barlow Condensed';
+    color: rgb(42, 126, 204);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.content_font{
+    color: rgb(210, 209, 209);
+}
+
+.hover_button{
+    color: rgb(55, 165, 225);
+    background-color: transparent;
+    border: 1px solid rgb(55, 165, 225);
+    border-radius: 10px;
+}
+
+.hover_button:hover{
+    color: rgb(255, 255, 255);
+    background-color:  rgb(55, 165, 225);
+    transition: color 0.1s;
+}
+
+/* styling of elements */
+
+.img{
+    margin-top: 15%;
+    border-radius: 15%;
+    object-fit: cover;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    height: 30%;
+    width: 40%;
+}
+
+.lower_font{
+        font-family: 'poppins', sans-serif; 
+        font-size: 24px; 
+        font-weight: 400; 
+        color: #000000; 
+        line-height: 1.5;
+}
