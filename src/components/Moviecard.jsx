@@ -4,8 +4,8 @@ const Moviecard = ({movieimage, moviename}) => {
           <div className="mb-3">
             <img src={movieimage} alt="movie name" className="movie-img"/>
           </div>
-          <div className="fs-5 w-100 align-text-center">
-            {moviename}
+          <div className="d-flex justify-content-center fs-5 w-75">
+            <div className="">{moviename}</div>
           </div>
         </div>
     )
