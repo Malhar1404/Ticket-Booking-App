@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage";
 import Layout from "./pages/Layout";
 import Myticket from "./pages/Myticket";
 import Moviepage from "./pages/Moviepage";
+import Theatrepage from "./pages/Theatrepage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           {/* dont give absolute path in child routes */}
           <Route path="myticket" element={<Myticket />} />
           <Route path="moviepage" element={<Moviepage />} />
+          <Route path="theatrepage" element={<Theatrepage />} />
         </Route>
       </Routes>
     </Router>

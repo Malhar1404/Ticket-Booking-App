@@ -13,14 +13,7 @@ const Movieleftsection = ({ theatreData = [], transferData }) => {
     showDate: "",
     theatreName: "",
   });
-
-  // let transferDataBody = {
-  //   theatreId: "",
-  //   showTime: "",
-  //   showDate: "",
-  //   theatreName: "",
-  // }
-
+  
   const navigate = useNavigate();
 
   const getConsecutiveDates = () => {

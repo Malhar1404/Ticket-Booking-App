@@ -10,18 +10,15 @@ const Homepage = () => {
 
   const navigate = useNavigate();
 
-  const btnHandler = (id) => {    
+  const btnHandler = (id) => {
     navigate("/main/moviepage", { state: { id } });
   };
 
   const toggleHandler = (event) => {
-    if(event.target.innerText === "Movie") {
+    if (event.target.innerText === "Movie") {
       setToggle(true);
     } else {
       setToggle(false);
-    }
-    if (!toggle) {
-      getTheatres();
     }
   };
   const getMovies = () => {
@@ -70,6 +67,7 @@ const Homepage = () => {
 
   useEffect(() => {
     getMovies();
+    getTheatres();
   }, []);
 
   //State does not changes instantly. so in order to check the state after it has been changed, we use useEffect
@@ -120,11 +118,18 @@ const Homepage = () => {
         ) : (
           <div className="row w-100">
             {theatreData?.map((theatre) => (
-              <Theatrecard
+              <button
                 key={theatre.id}
-                theatrename={theatre.name}
-                location={theatre.location}
-              />
+                className="d-flex justify-content-space-between theatre-page-btn m-1 w-100"
+                onClick={() => {
+                  navigate("/main/theatrepage", { state: {id : theatre.id} });
+                }}
+              >
+                <Theatrecard
+                  theatrename={theatre.name}
+                  location={theatre.location}
+                />
+              </button>
             ))}
           </div>
         )}
