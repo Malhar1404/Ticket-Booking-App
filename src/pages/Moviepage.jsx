@@ -30,11 +30,6 @@ const Moviepage = () => {
     });
   },[id,date]);
 
-  // useEffect(() => {
-  //   console.log(movieData);
-  //   console.log(theatreData);
-  // }),[data]
-
   return (
     <div className="container-fluid">
       <div className="row">

@@ -64,7 +64,6 @@ const Movieleftsection = ({ theatreData = [], transferData }) => {
   const theatreSelectHandler = (theatre) => {
     setTheatreId(theatre.id);
     setShowTimes(theatre.showtimes);
-    console.log(transferDataBody);
 
     const updatedData = { 
       ...transferDataBody, 
@@ -77,14 +76,12 @@ const Movieleftsection = ({ theatreData = [], transferData }) => {
   };
 
   const showTimeSelectHandler = (e) => {
-    console.log(transferDataBody);
     const updatedData = { ...transferDataBody, showTime: e.target.innerText };
     setTransferDataBody(updatedData);
     transferData(transferDataBody);
   };
 
   const showDateSelectHandler = (fullDate) => {
-    console.log(transferDataBody);
     const updatedData = { ...transferDataBody, showDate: fullDate };
     setTransferDataBody(updatedData);
     transferData(transferDataBody);
