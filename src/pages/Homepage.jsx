@@ -1,20 +1,29 @@
 import { useState, useEffect } from "react";
 import Moviecard from "../components/Moviecard";
 import Theatrecard from "../components/Theatrecard";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const [movieData, setMovieData] = useState([]);
   const [theatreData, setTheatreData] = useState([]);
   const [toggle, setToggle] = useState(true);
 
-  const toggleHandler = () => {
-    setToggle(!toggle);
-    console.log(toggle);
-    if (toggle) {
+  const navigate = useNavigate();
+
+  const btnHandler = (id) => {    
+    navigate("/main/moviepage", { state: { id } });
+  };
+
+  const toggleHandler = (event) => {
+    if(event.target.innerText === "Movie") {
+      setToggle(true);
+    } else {
+      setToggle(false);
+    }
+    if (!toggle) {
       getTheatres();
     }
   };
-
   const getMovies = () => {
     fetch(
       "http://ec2-13-201-98-117.ap-south-1.compute.amazonaws.com:3000/movies",
@@ -96,20 +105,23 @@ const Homepage = () => {
       </div>
 
       {/* movies section */}
-      <div className="d-flex flex-wrap my-1 w-100 mx-5">
+      <div className="d-flex flex-wrap justify-content-center">
         {toggle ? (
           movieData.map((movie) => (
-            <Moviecard
-              key={movie.Id}
-              movieimage={movie.image}
-              moviename={movie.name}
-            />
+            <div key={movie.Id} className="col-md-2 m-5">
+              <button
+                className="border-0 bg-transparent p-auto m-auto"
+                onClick={() => btnHandler(movie.id)}
+              >
+                <Moviecard movieimage={movie.image} moviename={movie.name} />
+              </button>
+            </div>
           ))
         ) : (
           <div className="row w-100">
             {theatreData?.map((theatre) => (
               <Theatrecard
-                key={theatre.Id}
+                key={theatre.id}
                 theatrename={theatre.name}
                 location={theatre.location}
               />
