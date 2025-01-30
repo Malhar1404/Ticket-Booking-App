@@ -2,12 +2,15 @@
 import { useNavigate } from "react-router-dom";
 const Successpage = () => {
 
-        const navigate = useNavigate();
+    const navigate = useNavigate();
     const cancelBtnHandler = ()=>{
         localStorage.removeItem("token");
         navigate("/");
     }
 
+    const viewTicketBtnHandler = ()=>{
+        navigate("/ticket");
+    }
     return (
       <div
         className="container-fluid d-flex justify-content-center align-items-center p-5"
@@ -39,7 +42,7 @@ const Successpage = () => {
           {/* View Ticket Button */}
           <div className="mb-3">
             <div className="w-100">
-              <button className="btn btn-primary w-100 fs-5 py-3">
+              <button className="btn btn-primary w-100 fs-5 py-3" onClick={viewTicketBtnHandler}>
                 View Ticket
               </button>
             </div>
