@@ -7,6 +7,7 @@ import Layout from "./pages/Layout";
 import Myticket from "./pages/Myticket";
 import Moviepage from "./pages/Moviepage";
 import Theatrepage from "./pages/Theatrepage";
+import SeatSelectionPage from "./pages/SeatSelectionPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="moviepage" element={<Moviepage />} />
           <Route path="theatrepage" element={<Theatrepage />} />
         </Route>
+        <Route path="/seatselection" element={<SeatSelectionPage />} />
       </Routes>
     </Router>
   );

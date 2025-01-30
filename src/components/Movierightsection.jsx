@@ -1,20 +1,44 @@
-
-import { useState } from "react";
+import { useEffect } from "react";
 import Moviecard from "./Moviecard";
 
 // initialized props as {} empty because the data from previous page is not coming instantly.
-const Movierightsection = ({movieData = {} , transferedData={}}) => {
+const Movierightsection = ({ movieData = {}, transferedData = {}, onClose }) => {
+
+
   
   const calculateDuration = (duration) => {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
     return `${hours}h ${minutes}m`;
   };
+
+  const booknowBtnHandler = () => {
+    // Check if all required fields (theatre, date, time) are selected
+    if (!transferedData.theatreName || !transferedData.showDate || !transferedData.showTime) {
+      let missingSelection = [];
+
+      if (!transferedData.theatreName) missingSelection.push("theatre");
+      if (!transferedData.showDate) missingSelection.push("date");
+      if (!transferedData.showTime) missingSelection.push("time");
+
+      // Show error message indicating which selection is missing
+      alert(`Please select ${missingSelection.join(", ")} before booking.`);
+    } else {
+      // If all are selected, proceed to book
+      onClose(true);
+    }
+  };
+  
+
+  useEffect(() => {
+    console.log(transferedData);
+  },[transferedData]);
   
   const duration = calculateDuration(movieData.duration);
+
   return (
     <div>
-      <Moviecard movieimage={movieData.image} moviename={movieData.name}/>
+      <Moviecard movieimage={movieData.image} moviename={movieData.name} />
       <div className="d-flex flex-column fs-6 text-dark-emphasis">
         <div className="align-text-center py-3 fw-bold">{movieData.description}</div>
         <div className="d-flex">
@@ -54,7 +78,7 @@ const Movierightsection = ({movieData = {} , transferedData={}}) => {
               *Seat selection can be done after this
             </div>
             <div>
-              <button className="btn btn-primary w-100">Book Now</button>
+              <button className="btn btn-primary w-100" onClick={booknowBtnHandler}>Book Now</button>
             </div>
           </div>
         </div>
