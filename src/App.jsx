@@ -8,6 +8,8 @@ import Myticket from "./pages/Myticket";
 import Moviepage from "./pages/Moviepage";
 import Theatrepage from "./pages/Theatrepage";
 import SeatSelectionPage from "./pages/SeatSelectionPage";
+import OrderTicket from "./components/OrderTicket";
+import Successpage from "./pages/Succespage";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="theatrepage" element={<Theatrepage />} />
         </Route>
         <Route path="/seatselection" element={<SeatSelectionPage />} />
+        <Route path="/orderticket" element={<OrderTicket />}></Route>
+        <Route path="/success" element={<Successpage />} />
       </Routes>
     </Router>
   );

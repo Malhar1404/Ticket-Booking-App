@@ -9,6 +9,8 @@ const SeatSelectionPage = () => {
     startTime: "",
     movieTime: "",
     totalPrice: "",
+    theatreName: "",
+    showTimeId: "",
   });
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [layoutPrices, setLayoutPrices] = useState([]);
@@ -16,7 +18,7 @@ const SeatSelectionPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { showTimeId, noOfSeats } = location.state;
+  const { showTimeId, noOfSeats, theatreName } = location.state;
 
   const parsingData = (layout) => {
     const rowsLayout = JSON.parse(layout);
@@ -44,50 +46,44 @@ const SeatSelectionPage = () => {
     return `${hours} hr ${remainingMinutes} min`;
   };
 
-  const seatSelectBtnHandler = (e) => {
-    const seat = e.target.innerText;
+  const seatSelectBtnHandler = (e, rowType, row, column) => {
+    const seat = { row, column, layoutType: rowType };
 
-    if (selectedSeats.includes(seat)) {
-      setSelectedSeats((prevSelectedSeats) => {
-        const updatedSeats = prevSelectedSeats.filter(
-          (selected) => selected !== seat
-        );
+    setSelectedSeats((prevSelectedSeats) => {
+      const isSelected = prevSelectedSeats.some(
+        (selected) => selected.row === row && selected.column === column
+      );
+
+      if (isSelected) {
         e.target.style.backgroundColor = "";
-        return updatedSeats;
-      });
-      setCount((prevCount) => prevCount - 1);
-    } else {
-      if (count < noOfSeats) {
-        setSelectedSeats((prevSelectedSeats) => {
-          const updatedSeats = [...prevSelectedSeats, seat];
-          e.target.style.backgroundColor = "#bbf7fc";
-          return updatedSeats;
-        });
-        setCount((prevCount) => prevCount + 1);
+        return prevSelectedSeats.filter(
+          (selected) => !(selected.row === row && selected.column === column)
+        );
       } else {
-        alert("You can select only " + noOfSeats + " seats");
+        if (prevSelectedSeats.length < noOfSeats) {
+          e.target.style.backgroundColor = "#bbf7fc";
+          return [...prevSelectedSeats, seat];
+        } else {
+          alert(`You can select only ${noOfSeats} seats`);
+          return prevSelectedSeats;
+        }
       }
-    }
+    });
+
+    setCount((prevCount) =>
+      selectedSeats.some((s) => s.row === row && s.column === column)
+        ? prevCount - 1
+        : prevCount + 1
+    );
   };
 
   const totalPriceHandler = () => {
-    let total = 0;
+    let total = selectedSeats.reduce((acc, seat) => {
+      const price = layoutPrices.find((p) => p.layoutType === seat.layoutType);
+      return price ? acc + price.price : acc;
+    }, 0);
 
-    selectedSeats.forEach((seat) => {
-      rows.forEach((row) => {
-        if (row.layout.rows.includes(seat.slice(0, 1))) {
-          const price = layoutPrices.find(
-            (price) => price.layoutType === row.type
-          );
-
-          if (price) {
-            total += price.price;
-          }
-        }
-      });
-    });
-
-    // console.log(total);
+    console.log("Total Price:", total);
 
     setTransferData((prevData) => ({
       ...prevData,
@@ -97,8 +93,14 @@ const SeatSelectionPage = () => {
 
   const bookNowHandler = () => {
     totalPriceHandler();
-    setTransferData((prev) => ({ ...prev, seats : selectedSeats }));
+    setTransferData((prev) => ({ ...prev, seats: selectedSeats }));
   };
+  
+  useEffect(() => {
+    if (transferData.totalPrice) {
+      navigate("/orderticket", { state: { transferData } });
+    }
+  }, [transferData.totalPrice]);
 
   const transferDataHandler = (tfData) => {
     const formatedDate = formatDate(tfData.startTime);
@@ -108,6 +110,8 @@ const SeatSelectionPage = () => {
       seats: selectedSeats,
       startTime: formatedDate,
       movieTime: duration,
+      theatreName: theatreName,
+      showTimeId: showTimeId,
     };
     setTransferData((prev) => ({ ...prev, ...data }));
   };
@@ -202,7 +206,14 @@ const SeatSelectionPage = () => {
                             <button
                               className="date-btn mx-2"
                               style={{ padding: "1px", fontSize: "12px" }}
-                              onClick={seatSelectBtnHandler}
+                              onClick={(e) =>
+                                seatSelectBtnHandler(
+                                  e,
+                                  row.type,
+                                  botRow,
+                                  column + 1
+                                )
+                              }
                             >
                               <div className="d-flex">
                                 <div className="m-1 mx-2">{`${botRow}${
@@ -238,7 +249,7 @@ const SeatSelectionPage = () => {
           style={{ padding: "12px 30px", fontSize: "16px" }}
           onClick={() => bookNowHandler({})}
         >
-          Book Now
+          Pay Now
         </button>
       </div>
     </div>
