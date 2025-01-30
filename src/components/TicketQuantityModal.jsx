@@ -7,9 +7,12 @@ import { useNavigate } from "react-router-dom";
 const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId }) => {
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const navigate = useNavigate();
+  let noOfSeats = "";
 
   const seatSelectBtnHandler = () => {
-    navigate("/seatselection", { state: { showTimeId : selectedShowTimeId } });
+    navigate("/seatselection", {
+      state: { showTimeId: selectedShowTimeId, noOfSeats: noOfSeats },
+    });
   };
 
   const modalHandler = () => {
@@ -73,7 +76,7 @@ const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId }) => {
             <div className="row">
               {array.map((num) => (
                 <div className="d-flex col-3" key={num}>
-                  <button type="button" className="date-btn  my-1 mx-2 p-3">
+                  <button type="button" className="date-btn  my-1 mx-2 p-3" onClick={() => noOfSeats = num}>
                     {num}
                   </button>
                 </div>
@@ -90,7 +93,11 @@ const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId }) => {
               Cancel
             </button>
 
-            <button type="button" className="btn btn-primary" onClick={seatSelectBtnHandler}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={seatSelectBtnHandler}
+            >
               Seat Select
             </button>
           </div>
