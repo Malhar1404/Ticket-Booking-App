@@ -4,15 +4,12 @@ const Ticketcard = ({ ticket = {} }) => {
 
   const navigate = useNavigate();
   const formatDate = (dateString)=> {
-    // Parse the date string and create a new Date object
     const date = new Date(dateString);
 
-    // Check if the date is valid
     if (isNaN(date)) {
       return "Invalid Date";
     }
 
-    // Options for formatting the date
     const options = {
       weekday: "short",
       year: "numeric",
@@ -20,8 +17,6 @@ const Ticketcard = ({ ticket = {} }) => {
       day: "numeric",
     };
 
-    // console.log(date.toLocaleDateString("en-US", options));
-    // Convert the date to the local time zone and return the formatted string
     return date.toLocaleDateString("en-US", options);
   }
 

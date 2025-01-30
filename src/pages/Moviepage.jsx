@@ -10,7 +10,7 @@ const Moviepage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [urlDate, setUrlDate] = useState("");
   const [selectedShowTimeId, setSelectedShowTimeId] = useState("")
-  
+  const [selectedTheatreName, setSelectedTheatreName] = useState("")
   const location = useLocation();
   const movieId = location.state.id;
 
@@ -43,8 +43,13 @@ const Moviepage = () => {
   }, [urlDate]);
 
   // useEffect(() => {
-  //   console.log(data);
+  //   console.log(theatreData);
   // },[data])
+
+  useEffect(()=>{
+    console.log(selectedTheatreName);
+    
+  },[selectedTheatreName])
 
 
   return (
@@ -56,6 +61,7 @@ const Moviepage = () => {
             theatreData={theatreData}
             transferData={setChildInterchangeData}
             selectedShowTime={setSelectedShowTimeId}
+            setTheatreName={setSelectedTheatreName}
           />
         </div>
         {/* right section */}
@@ -68,7 +74,9 @@ const Moviepage = () => {
         </div>
       </div>
 
-      <TicketQuantityModal isOpen={isModalOpen} onClose={setIsModalOpen} selectedShowTimeId={selectedShowTimeId}/>
+      <TicketQuantityModal isOpen={isModalOpen} onClose={setIsModalOpen} selectedShowTimeId={selectedShowTimeId} 
+      theatreName={selectedTheatreName}
+      />
     </div>
   );
 };

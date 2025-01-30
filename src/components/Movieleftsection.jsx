@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedShowTime}) => {
+const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedShowTime, setTheatreName}) => {
   const [showTimeData, setShowTimeData] = useState(theatreData);
   const [theatreId, setTheatreId] = useState("");
   const [showTimes, setShowTimes] = useState([]);
@@ -85,6 +85,9 @@ const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedSho
   const theatreSelectHandler = (theatre) => {
     setTheatreId(theatre.id);
     setShowTimes(theatre.showtimes);
+    console.log(theatre.name);
+    
+    setTheatreName(theatre.name);
 
     const updatedData = {
       ...transferDataBody,
@@ -140,9 +143,9 @@ const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedSho
     transferData(transferDataBody);
   }, [transferDataBody, transferData]);
 
-  useEffect(() => {
-    console.log(showTimeData);
-  }, [showTimeData]);
+  // useEffect(() => {
+  //   console.log(showTimeData);
+  // }, [showTimeData]);
 
   const btnHandler = () => {
     navigate("/main");

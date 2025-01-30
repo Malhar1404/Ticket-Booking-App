@@ -4,14 +4,16 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { Modal } from "bootstrap"; // Import Bootstrap Modal
 import { useNavigate } from "react-router-dom";
 
-const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId }) => {
+const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId, theatreName }) => {
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const navigate = useNavigate();
   let noOfSeats = "";
 
   const seatSelectBtnHandler = () => {
+    console.log(theatreName);
+    
     navigate("/seatselection", {
-      state: { showTimeId: selectedShowTimeId, noOfSeats: noOfSeats },
+      state: { showTimeId: selectedShowTimeId, noOfSeats: noOfSeats, theatreName: theatreName },
     });
   };
 
