@@ -36,15 +36,19 @@ const Myticket = () => {
   }, []);
 
   useEffect(() => {
+    const currentDate = new Date();
+
     if (toggle) {
-      const splitTicketData = ticketData.filter(
-        (ticket) => ticket.status === "PENDING"
-      );
+      const splitTicketData = ticketData.filter((ticket) => {
+        const ticketDate = new Date(ticket.showtime.startTime);
+        return ticketDate > currentDate;
+      });
       setUpcomingData(splitTicketData);
     } else {
-      const splitTicketData = ticketData.filter(
-        (ticket) => ticket.status === "COMPLETED"
-      );
+      const splitTicketData = ticketData.filter((ticket) => {
+        const ticketDate = new Date(ticket.showtime.startTime);
+        return ticketDate <= currentDate;
+      });
       setHistoryData(splitTicketData);
     }
   }, [toggle, ticketData]);
