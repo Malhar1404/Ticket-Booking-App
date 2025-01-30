@@ -10,6 +10,7 @@ import Theatrepage from "./pages/Theatrepage";
 import SeatSelectionPage from "./pages/SeatSelectionPage";
 import OrderTicket from "./components/OrderTicket";
 import Successpage from "./pages/Succespage";
+import TicketPage from "./pages/TicketPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/seatselection" element={<SeatSelectionPage />} />
         <Route path="/orderticket" element={<OrderTicket />}></Route>
         <Route path="/success" element={<Successpage />} />
+        <Route path="/ticket" element={<TicketPage />} />
       </Routes>
     </Router>
   );

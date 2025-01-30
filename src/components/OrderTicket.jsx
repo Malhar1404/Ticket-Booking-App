@@ -15,7 +15,8 @@ const OrderTicket = () => {
     },
   };
 
-  const redirectHandler = (url) => {
+  const redirectHandler = (url,orderId) => {
+    localStorage.setItem("orderId",orderId)
     window.open(url, "_blank");
   };
   
@@ -41,7 +42,7 @@ const OrderTicket = () => {
         
         // setResStatus(data.statusCode);
         if (data.statuscode === 400) alert(data.message);
-        redirectHandler(data.paymentUrl);
+        redirectHandler(data.paymentUrl,data.orderId);
       })
       .catch((error) => {
         console.log(error);

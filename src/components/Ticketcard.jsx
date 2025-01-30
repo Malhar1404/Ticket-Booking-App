@@ -1,11 +1,12 @@
-import { useNavigate  } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Ticketcard = ({ ticket = {} }) => {
-
+  const [ticketData, setTicketData] = useState(ticket);
   const navigate = useNavigate();
-  const formatDate = (dateString)=> {
-    const date = new Date(dateString);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
     if (isNaN(date)) {
       return "Invalid Date";
     }
@@ -18,29 +19,40 @@ const Ticketcard = ({ ticket = {} }) => {
     };
 
     return date.toLocaleDateString("en-US", options);
-  }
+  };
 
-  const formatTime=(dateString) => {
+  const formatTime = (dateString) => {
     const date = new Date(dateString);
-  
     if (isNaN(date)) {
       return "Invalid Date";
     }
-  
+
     let hours = date.getHours();
     let minutes = date.getMinutes();
-  
-    const period = hours >= 12 ? 'PM' : 'AM';
-  
+    const period = hours >= 12 ? "PM" : "AM";
+
     hours = hours % 12;
     hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-  
-    return `${hours}:${minutes} ${period}`;
-  }
+    minutes = minutes < 10 ? "0" + minutes : minutes;
 
-  const btnHandler = () =>{
-    navigate('/download-pdf');
+    return `${hours}:${minutes} ${period}`;
+  };
+
+  const btnHandler = () => {
+    navigate("/download-pdf");
+  };
+
+  useEffect(() => {
+    console.log(ticket);
+    setTicketData(ticket);
+  }, [ticket]);
+
+  useEffect(() => {
+    console.log(ticketData);
+  }, [ticketData]);
+
+  if (!ticketData.showtime) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -51,45 +63,43 @@ const Ticketcard = ({ ticket = {} }) => {
         background: "linear-gradient(135deg, #eef2f3, #dbe9f4)",
       }}
     >
-      {/* Date Section */}
       <div className="d-flex flex-column mb-3">
         <div className="fs-6 text-dark fw-semibold text-uppercase opacity-75">
           📅 Date
         </div>
         <div className="fs-5 text-primary fw-bold">
-          {formatDate(ticket.showtime.startTime)}
+          {ticketData.showtime && formatDate(ticketData.showtime.startTime)}
         </div>
       </div>
 
-      {/* Movie Title Section */}
       <div className="d-flex flex-column mb-3">
         <div className="fs-6 text-dark fw-semibold text-uppercase opacity-75">
           🎬 Movie
         </div>
-        <div className="fs-5 text-dark-emphasis fw-bold">{ticket.showtime.movie.name}</div>
+        <div className="fs-5 text-dark-emphasis fw-bold">
+          {ticketData.showtime && ticketData.showtime.movie?.name}
+        </div>
       </div>
 
-      {/* Ticket & Time Row */}
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column">
           <div className="fs-6 text-dark fw-semibold text-uppercase opacity-75">
             🎫 Seats
           </div>
-          <div className="fs-5 text-success fw-bold">{ticket.seatData.seats.map(seat => {
-            return (
-              `${seat.row}${seat.column} `
-            )
-          })}</div>
+          <div className="fs-5 text-success fw-bold">
+            {ticketData.seatData && ticketData.seatData.seats?.map((seat) => `${seat.row}${seat.column} `)}
+          </div>
         </div>
         <div className="d-flex flex-column text-end">
           <div className="fs-6 text-dark fw-semibold text-uppercase opacity-75">
             🕒 Time
           </div>
-          <div className="fs-5 text-danger fw-bold">{formatTime(ticket.showtime.startTime)}</div>
+          <div className="fs-5 text-danger fw-bold">
+            {ticketData.showtime && formatTime(ticketData.showtime.startTime)}
+          </div>
         </div>
       </div>
 
-      {/* Download Button */}
       <div className="d-flex mt-4">
         <button
           className="btn btn-primary w-100 fs-6 py-2 fw-bold shadow-sm"
