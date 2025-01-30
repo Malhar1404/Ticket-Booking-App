@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { pdf } from '@react-pdf/renderer';
+import TicketPDF from './TicketPDF'; 
 
 const Ticketcard = ({ ticket = {} }) => {
   const [ticketData, setTicketData] = useState(ticket);
@@ -39,7 +41,14 @@ const Ticketcard = ({ ticket = {} }) => {
   };
 
   const btnHandler = () => {
-    navigate("/download-pdf");
+    pdf(<TicketPDF ticketData={ticketData} formatDate={formatDate} formatTime={formatTime} />)
+      .toBlob()
+      .then((blob) => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'ticket.pdf';
+        link.click();
+      });
   };
 
   useEffect(() => {
