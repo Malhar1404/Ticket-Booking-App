@@ -1,16 +1,26 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const Showlists = ({ movie = {}, showtimes = [] }) => {
-  const navigate = useNavigate();
+const Showlists = ({
+  movie = {},
+  showtimes = [],
+  setSelectedShowTimeId,
+  setIsModalOpen,
+}) => {
+  const [isShowTimeSelected, setIsShowTimeSelected] = useState(false);
   const calculateDuration = (duration) => {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
     return `${hours}h ${minutes}m`;
   };
 
-  const btnHandler = ()=>{
-    navigate("/no-of-seats");
-  }
+  const showTimeBtnHandler = (show) => {
+    setSelectedShowTimeId(show.showTimeId);
+    setIsShowTimeSelected(true);
+  };
+
+  const btnHandler = () => {
+    setIsModalOpen(true);
+  };
 
   const movieDuration = movie.duration
     ? calculateDuration(movie.duration)
@@ -34,7 +44,11 @@ const Showlists = ({ movie = {}, showtimes = [] }) => {
               showtimes[0].showtimes.map((show) => {
                 const time = show.startTime.slice(11, 16);
                 return (
-                  <button key={show.showTimeId} className="theatre-btn mx-2">
+                  <button
+                    key={show.showTimeId}
+                    className="theatre-btn mx-2"
+                    onClick={()=>showTimeBtnHandler(show)}
+                  >
                     {time}
                   </button>
                 );
@@ -47,9 +61,13 @@ const Showlists = ({ movie = {}, showtimes = [] }) => {
 
         {/* Book Now button */}
         <div className="d-flex w-100 justify-content-end align-items-center">
-          <div>
-              <button className="btn btn-primary w-100" onClick={btnHandler}>Book Now</button>
-          </div>
+          {isShowTimeSelected && (
+            <div>
+              <button className="btn btn-primary w-100" onClick={btnHandler}>
+                Book Now
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="horizontal-line"></div>

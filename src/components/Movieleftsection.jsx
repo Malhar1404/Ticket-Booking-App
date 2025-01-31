@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedShowTime, setTheatreName}) => {
+const Movieleftsection = ({ theatreData = [], transferData, setSelectedDate ,selectedShowTime, setTheatreName}) => {
   const [showTimeData, setShowTimeData] = useState(theatreData);
-  const [theatreId, setTheatreId] = useState("");
+  // const [theatreId, setTheatreId] = useState("");
   const [showTimes, setShowTimes] = useState([]);
   const [times, setTimes] = useState([]);
   const [timeCardData, setTimeCardData] = useState([]);
@@ -41,7 +41,7 @@ const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedSho
 
     // Format the date as MM/DD/{current year}
     const formattedDate = `${month}/${day.padStart(2, "0")}/${currentYear}`;
-    setDate(formattedDate);
+    setSelectedDate(formattedDate);
   };
 
   const getConsecutiveDates = () => {
@@ -83,7 +83,7 @@ const Movieleftsection = ({ theatreData = [], transferData, setDate ,selectedSho
   }, []);
 
   const theatreSelectHandler = (theatre) => {
-    setTheatreId(theatre.id);
+    // setTheatreId(theatre.id);
     setShowTimes(theatre.showtimes);
     console.log(theatre.name);
     

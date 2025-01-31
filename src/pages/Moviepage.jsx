@@ -8,21 +8,16 @@ const Moviepage = () => {
   const [data, setData] = useState({});
   const [childInterchangeData, setChildInterchangeData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [urlDate, setUrlDate] = useState("");
-  const [selectedShowTimeId, setSelectedShowTimeId] = useState("")
-  const [selectedTheatreName, setSelectedTheatreName] = useState("")
+  const [urlDate, setUrlDate] = useState(new Date().toLocaleDateString("en-US"));
+  const [selectedShowTimeId, setSelectedShowTimeId] = useState("");
+  const [selectedTheatreName, setSelectedTheatreName] = useState("");
   const location = useLocation();
   const movieId = location.state.id;
 
   const movieData = data.movie;
   const theatreData = data.theaters;
 
-  // useEffect(() => {
-  //   console.log(isModalOpen);
-    
-  // },[isModalOpen])
-
-  useEffect(() => {    
+  useEffect(() => {
     fetch(
       `http://ec2-13-201-98-117.ap-south-1.compute.amazonaws.com:3000/show-times/${movieId}/by-date?date=${urlDate}`,
       {
@@ -46,18 +41,17 @@ const Moviepage = () => {
   //   console.log(theatreData);
   // },[data])
 
-  useEffect(()=>{
-    console.log(selectedTheatreName);
-    
-  },[selectedTheatreName])
+  // useEffect(()=>{
+  //   console.log(selectedTheatreName);
 
+  // },[selectedTheatreName])
 
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="left-section col-8">
           <Movieleftsection
-            setDate={setUrlDate}
+            setSelectedDate={setUrlDate}
             theatreData={theatreData}
             transferData={setChildInterchangeData}
             selectedShowTime={setSelectedShowTimeId}
@@ -74,8 +68,11 @@ const Moviepage = () => {
         </div>
       </div>
 
-      <TicketQuantityModal isOpen={isModalOpen} onClose={setIsModalOpen} selectedShowTimeId={selectedShowTimeId} 
-      theatreName={selectedTheatreName}
+      <TicketQuantityModal
+        isOpen={isModalOpen}
+        onClose={setIsModalOpen}
+        selectedShowTimeId={selectedShowTimeId}
+        theatreName={selectedTheatreName}
       />
     </div>
   );

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Showlists from "../components/Showlists";
+import TicketQuantityModal from "../components/TicketQuantityModal";
 
 const Theatrepage = () => {
   const [movies, setMovies] = useState([]);
@@ -9,8 +10,11 @@ const Theatrepage = () => {
   const [movieData, setMovieData] = useState([]);
   const [showTimesFetched, setShowTimesFetched] = useState(false);
   const [dates, setDates] = useState([]);
+  const [selectedShowTimeId, setSelectedShowTimeId] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   let date = new Date().toLocaleDateString("en-US");
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state.id;
 
@@ -27,6 +31,8 @@ const Theatrepage = () => {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
+
         setTheatreData(data.data);
         setMovies(data.data.movies);
       })
@@ -87,7 +93,7 @@ const Theatrepage = () => {
             // console.log(`Showtimes for ${movie.name}:`, data);
             setMovieData((prevData) => ({
               ...prevData,
-              [movie.id]: data, // Store using movie.id as key
+              [movie.id]: data, //movie Id key and showtimes as values
             }));
           })
           .catch((error) => console.error("Error fetching showtimes:", error))
@@ -140,6 +146,10 @@ const Theatrepage = () => {
   // }),
   //   [movieData];
 
+    // useEffect(()=>{
+    //   console.log(selectedShowTimeId);
+    // },[selectedShowTimeId])
+
   return (
     <div className="container-fluid p-5">
       <div className="p-4">
@@ -151,7 +161,14 @@ const Theatrepage = () => {
                 className="p-3 fs-2"
                 style={{ fontWeight: 800, color: "rgb(42, 126, 204)" }}
               >
-                <i className="fa-solid fa-arrow-left-long"></i>
+                <button
+                  className="bg-transparent border-0 text-primary"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  <i className="fa-solid fa-arrow-left-long"></i>
+                </button>
               </div>
             </div>
             <div className="d-flex flex-column">
@@ -231,6 +248,8 @@ const Theatrepage = () => {
                   key={movie.id}
                   movie={movie}
                   showtimes={newShowTimes}
+                  setSelectedShowTimeId={setSelectedShowTimeId}
+                  setIsModalOpen={setIsModalOpen}
                 />
               );
             }
@@ -239,6 +258,8 @@ const Theatrepage = () => {
           })}
         </div>
       </div>
+      <TicketQuantityModal isOpen={isModalOpen} onClose={setIsModalOpen} selectedShowTimeId={selectedShowTimeId} 
+      theatreName={theatreData.name}/>
     </div>
   );
 };
