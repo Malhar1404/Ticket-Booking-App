@@ -14,7 +14,7 @@ const SeatSelectionPage = () => {
   });
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [layoutPrices, setLayoutPrices] = useState([]);
-  const [count, setCount] = useState(0);
+  const [bookedSeats, setBookedSeats] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,6 +48,13 @@ const SeatSelectionPage = () => {
 
   const seatSelectBtnHandler = (e, rowType, row, column) => {
     const seat = { row, column, layoutType: rowType };
+    if (
+      selectedSeats.length >= noOfSeats &&
+      !selectedSeats.some((s) => s.row === row && s.column === column)
+    ) {
+      alert(`You can select only ${noOfSeats} seats`);
+      return;
+    }
 
     setSelectedSeats((prevSelectedSeats) => {
       const isSelected = prevSelectedSeats.some(
@@ -60,21 +67,11 @@ const SeatSelectionPage = () => {
           (selected) => !(selected.row === row && selected.column === column)
         );
       } else {
-        if (prevSelectedSeats.length < noOfSeats) {
-          e.target.style.backgroundColor = "#bbf7fc";
-          return [...prevSelectedSeats, seat];
-        } else {
-          alert(`You can select only ${noOfSeats} seats`);
-          return prevSelectedSeats;
-        }
+        // Select the seat
+        e.target.style.backgroundColor = "#bbf7fc";
+        return [...prevSelectedSeats, seat];
       }
     });
-
-    setCount((prevCount) =>
-      selectedSeats.some((s) => s.row === row && s.column === column)
-        ? prevCount - 1
-        : prevCount + 1
-    );
   };
 
   const totalPriceHandler = () => {
@@ -95,7 +92,7 @@ const SeatSelectionPage = () => {
     totalPriceHandler();
     setTransferData((prev) => ({ ...prev, seats: selectedSeats }));
   };
-  
+
   useEffect(() => {
     if (transferData.totalPrice) {
       navigate("/orderticket", { state: { transferData } });
@@ -116,16 +113,22 @@ const SeatSelectionPage = () => {
     setTransferData((prev) => ({ ...prev, ...data }));
   };
 
+  const bookedSeatsList = (bookedSeats) => {
+    let formatedBookedSeats = [];
+
+    bookedSeats.forEach((seat) => {
+      const formatedSeat = `${seat.row}${seat.column}`;
+      formatedBookedSeats = [...formatedBookedSeats, formatedSeat];
+    });
+    setBookedSeats(formatedBookedSeats);
+  };
+
   // useEffect(() => {
   //   // console.log(rows);
   // }, [rows]);
   // useEffect(() => {
   //   // console.log(layoutPrices);
   // }, [layoutPrices]);
-
-  useEffect(() => {
-    console.log(transferData);
-  }, [transferData]);
 
   useEffect(() => {
     console.log(showTimeId);
@@ -145,6 +148,7 @@ const SeatSelectionPage = () => {
         console.log(data.data);
         parsingData(data.data.screen.layout);
         setLayoutPrices(data.data.price);
+        bookedSeatsList(data.data.orders[0].seatData.seats);
         transferDataHandler(data.data);
       })
       .catch((error) => {
@@ -199,30 +203,40 @@ const SeatSelectionPage = () => {
 
                   {row.layout.rows.map((botRow) => (
                     <div key={botRow} className="py-3 mx- row">
-                      {Array(row.layout.columns[1])
-                        .fill()
-                        .map((_, column) => (
-                          <div key={column} className="col-1 p-1 mx-1 d-flex">
-                            <button
-                              className="date-btn mx-2"
-                              style={{ padding: "1px", fontSize: "12px" }}
-                              onClick={(e) =>
-                                seatSelectBtnHandler(
-                                  e,
-                                  row.type,
-                                  botRow,
-                                  column + 1
-                                )
-                              }
-                            >
-                              <div className="d-flex">
-                                <div className="m-1 mx-2">{`${botRow}${
-                                  column + 1
-                                }`}</div>
-                              </div>
-                            </button>
-                          </div>
-                        ))}
+                      {[...Array(row.layout.columns[1])].map((_, column) => (
+                        <div key={column} className="col-1 mx-1">
+                          <button
+                            className="date-btn mx-2 p-2"
+                            style={{
+                              padding: "1px",
+                              fontSize: "12px",
+                              backgroundColor: bookedSeats.includes(
+                                `${botRow}${column + 1}`
+                              )
+                                ? "grey"
+                                : "",
+                              cursor: bookedSeats.includes(
+                                `${botRow}${column + 1}`
+                              )
+                                ? "not-allowed"
+                                : "pointer",
+                            }}
+                            onClick={(e) =>
+                              seatSelectBtnHandler(
+                                e,
+                                row.type,
+                                botRow,
+                                column + 1
+                              )
+                            }
+                            disabled={bookedSeats.includes(
+                              `${botRow}${column + 1}`
+                            )}
+                          >
+                            {`${botRow}${column + 1}`}
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
