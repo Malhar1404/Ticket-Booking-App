@@ -123,13 +123,6 @@ const SeatSelectionPage = () => {
     setBookedSeats(formatedBookedSeats);
   };
 
-  // useEffect(() => {
-  //   // console.log(rows);
-  // }, [rows]);
-  // useEffect(() => {
-  //   // console.log(layoutPrices);
-  // }, [layoutPrices]);
-
   useEffect(() => {
     console.log(showTimeId);
 
@@ -148,7 +141,11 @@ const SeatSelectionPage = () => {
         console.log(data.data);
         parsingData(data.data.screen.layout);
         setLayoutPrices(data.data.price);
-        bookedSeatsList(data.data.orders[0].seatData.seats);
+        bookedSeatsList(
+          data.data.orders
+            .map((order) => order.seatData.seats) // Get arrays of seats from each order
+            .reduce((acc, seats) => acc.concat(seats), []) // Flatten the array
+        );
         transferDataHandler(data.data);
       })
       .catch((error) => {
@@ -156,6 +153,13 @@ const SeatSelectionPage = () => {
       });
   }, []);
 
+  useEffect(() => {
+    console.log(transferData);
+  }, [transferData]);
+
+  useEffect(() => {
+    console.log(bookedSeats);
+  }, [bookedSeats]);
   const btnHandler = () => {
     navigate(-1);
   };

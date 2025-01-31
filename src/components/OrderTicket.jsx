@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useNavigate, useLocation, redirect } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const OrderTicket = () => {
   const location = useLocation();
@@ -15,11 +15,10 @@ const OrderTicket = () => {
     },
   };
 
-  const redirectHandler = (url,orderId) => {
-    localStorage.setItem("orderId",orderId)
+  const redirectHandler = (url, orderId) => {
+    localStorage.setItem("orderId", orderId);
     window.open(url, "_blank");
   };
-  
 
   const fetchHandler = () => {
     fetch(
@@ -38,11 +37,13 @@ const OrderTicket = () => {
       })
       .then((data) => {
         console.log(data);
-        console.log(data.paymentUrl);
-        
         // setResStatus(data.statusCode);
-        if (data.statuscode === 400) alert(data.message);
-        redirectHandler(data.paymentUrl,data.orderId);
+        if (data.statusCode === 400) {
+          alert(data.message, "You are late!!");
+          navigate("/seatselection");
+        } else {
+          redirectHandler(data.paymentUrl, data.orderId);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -55,7 +56,9 @@ const OrderTicket = () => {
       showtimeId: transferData.showTimeId,
       seatData: { ...dataFormat.seatData, seats: transferData.seats },
     };
-    // console.log(dataFormat);
+    console.log(transferData.showTimeId);
+
+    console.log(dataFormat);
     fetchHandler();
   };
 
