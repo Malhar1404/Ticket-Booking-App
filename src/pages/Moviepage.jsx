@@ -37,6 +37,10 @@ const Moviepage = () => {
       });
   }, [urlDate]);
 
+  useEffect(()=>{
+    console.log(isModalOpen);
+  },[isModalOpen])
+
   // useEffect(() => {
   //   console.log(theatreData);
   // },[data])

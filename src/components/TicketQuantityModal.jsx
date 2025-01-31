@@ -1,75 +1,75 @@
 import { useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Modal } from "bootstrap"; // Import Bootstrap Modal
+import { Modal } from "bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId, theatreName }) => {
+const BootstrapModal = ({
+  isOpen,
+  onClose,
+  selectedShowTimeId,
+  theatreName,
+}) => {
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const navigate = useNavigate();
   let noOfSeats = "";
 
-  const seatSelectBtnHandler = () => {
-    console.log(theatreName);
-    
-    navigate("/seatselection", {
-      state: { showTimeId: selectedShowTimeId, noOfSeats: noOfSeats, theatreName: theatreName },
-    });
-  };
-
-  const modalHandler = () => {
-    const modalElement = document.getElementById("bootstrapModal");
-
-    // Define a function for the hidden.bs.modal event listener
-    const handleModalClose = () => {
-      onClose(false); // Update state in parent when modal closes
-    };
+  useEffect(() => {
+    const modalElement = document.getElementById("staticBackdrop");
+    const bodyElement = document.body;
 
     if (modalElement) {
-      const modalInstance = new Modal(modalElement, { backdrop: true });
+      const modalInstance = new Modal(modalElement, {
+        backdrop: "static",
+        keyboard: false,
+      });
 
-      // Open or close the modal based on isOpen state
       if (isOpen) {
-        modalInstance.show();
+        modalInstance.show(); 
+        bodyElement.style.overflow = "hidden"; 
       } else {
-        modalInstance.hide();
+        modalInstance.hide(); 
+        bodyElement.style.overflow = "auto"; 
       }
 
-      // Handle the event when the modal is closed by clicking the backdrop
-      modalElement.addEventListener("hidden.bs.modal", handleModalClose);
 
-      // Cleanup event listener on component unmount or modal state change
       return () => {
-        modalElement.removeEventListener("hidden.bs.modal", handleModalClose);
+        modalInstance.dispose();
+        bodyElement.style.overflow = "auto"; 
       };
+    }
+  }, [isOpen]);
+
+  const seatSelectBtnHandler = () => {
+    console.log(theatreName);
+
+    if(noOfSeats){
+      navigate("/seatselection", {
+        state: {
+          showTimeId: selectedShowTimeId,
+          noOfSeats: noOfSeats,
+          theatreName: theatreName,
+        },
+      });
+    }else{
+      alert("Please select number of seats!!");
     }
   };
 
-  useEffect(() => {
-    modalHandler();
-  }, [isOpen, onClose]);
-
-  // Manually remove the modal backdrop when modal closes or navigate
-  useEffect(() => {
-    const backdrop = document.querySelector(".modal-backdrop");
-    if (backdrop) {
-      backdrop.remove(); // Remove the backdrop after navigation
-    }
-  }, [navigate]);
+  if (!isOpen) return null; // Don't render the modal when isOpen is false
 
   return (
     <div
       className="modal fade"
-      id="bootstrapModal"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
       tabIndex="-1"
-      aria-labelledby="bootstrapModalLabel"
-      aria-hidden={!isOpen} // Hide modal when isOpen is false
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
     >
-      <div className="modal-dialog modal-sm">
-        {/* Small size modal */}
+      <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="bootstrapModalLabel">
+            <h5 className="modal-title" id="staticBackdropLabel">
               Select no. of Tickets
             </h5>
           </div>
@@ -78,7 +78,11 @@ const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId, theatreName }) =>
             <div className="row">
               {array.map((num) => (
                 <div className="d-flex col-3" key={num}>
-                  <button type="button" className="date-btn  my-1 mx-2 p-3" onClick={() => noOfSeats = num}>
+                  <button
+                    type="button"
+                    className="date-btn my-1 mx-2 p-3"
+                    onClick={() => (noOfSeats = num)}
+                  >
                     {num}
                   </button>
                 </div>
@@ -89,12 +93,12 @@ const BootstrapModal = ({ isOpen, onClose, selectedShowTimeId, theatreName }) =>
             <button
               type="button"
               className="btn btn-danger"
-              onClick={() => onClose(false)} // Close modal on button click
+              data-bs-dismiss="modal"
+              onClick={() => onClose(false)}
               aria-label="Close"
             >
               Cancel
             </button>
-
             <button
               type="button"
               className="btn btn-primary"

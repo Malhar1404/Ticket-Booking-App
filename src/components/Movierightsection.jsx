@@ -4,8 +4,6 @@ import Moviecard from "./Moviecard";
 // initialized props as {} empty because the data from previous page is not coming instantly.
 const Movierightsection = ({ movieData = {}, transferedData = {}, onClose }) => {
 
-
-  
   const calculateDuration = (duration) => {
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;
@@ -78,7 +76,7 @@ const Movierightsection = ({ movieData = {}, transferedData = {}, onClose }) => 
               *Seat selection can be done after this
             </div>
             <div>
-              <button className="btn btn-primary w-100" onClick={booknowBtnHandler}>Book Now</button>
+              <button className="btn btn-primary w-100" onClick={booknowBtnHandler} >Book Now</button>
             </div>
           </div>
         </div>
